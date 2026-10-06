@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#f4f4ef">
+	<meta name="description" content="A thoughtful workspace for managing Prestige Tailoring House customers, orders, payments, and collections.">
+	<title>J Crafts | Prestige Tailoring House</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<div class="app-shell">
+		<aside class="sidebar" id="sidebar">
+			<a class="brand" href="#dashboard" aria-label="J Crafts dashboard">
+				<span class="brand-mark">J<span>.</span></span>
+				<span class="brand-copy"><strong>J Crafts</strong><small>PRESTIGE TAILORING HOUSE</small></span>
+			</a>
+			<div class="workspace-label">WORKSPACE</div>
+			<nav class="primary-nav" aria-label="Main navigation">
+				<button class="nav-link active" data-view="dashboard"><span class="nav-icon" data-icon="grid"></span>Dashboard</button>
+				<button class="nav-link" data-view="customers"><span class="nav-icon" data-icon="users"></span>Customers</button>
+				<button class="nav-link" data-view="orders"><span class="nav-icon" data-icon="scissors"></span>Orders</button>
+				<button class="nav-link" data-view="measurements"><span class="nav-icon" data-icon="ruler"></span>Measurements</button>
+				<button class="nav-link" data-view="gallery"><span class="nav-icon" data-icon="image"></span>Gallery</button>
+				<button class="nav-link" data-view="payments"><span class="nav-icon" data-icon="wallet"></span>Payments</button>
+			</nav>
+			<div class="sidebar-bottom">
+				<div class="studio-note"><span class="studio-dot"></span><span><strong>Your studio</strong><small>Made with intention.</small></span></div>
+				<button class="nav-link" data-view="settings"><span class="nav-icon" data-icon="settings"></span>Settings</button>
+				<div class="sidebar-foot">A finer fit, every time.<span>© <span id="current-year"></span> J Crafts</span></div>
+			</div>
+		</aside>
+
+		<main class="main-area">
+			<header class="topbar">
+				<button class="icon-button mobile-menu" id="mobile-menu" aria-label="Open navigation"><span data-icon="menu"></span></button>
+				<div class="breadcrumb"><span>J Crafts</span><span class="crumb-slash">/</span><strong id="breadcrumb-current">Dashboard</strong></div>
+				<div class="topbar-actions">
+					<button class="icon-button notification-button" id="notification-button" aria-label="View collection reminders"><span data-icon="bell"></span><i id="notification-dot" hidden></i></button>
+					<span class="topbar-divider"></span>
+					<div class="user-chip"><span class="avatar">JC</span><span><strong>Studio manager</strong><small>Administrator</small></span></div>
+				</div>
+			</header>
+
+			<div class="page-content">
+				<section class="view-section active" id="view-dashboard">
+					<div class="page-heading dashboard-heading">
+						<div><p class="eyebrow" id="today-label">YOUR WORKROOM</p><h1 class="greeting-heading"><span id="greeting-text" aria-live="off"></span><span class="typewriter-caret" aria-hidden="true"></span></h1><p class="page-subtitle">A clear view of your orders, clients, and what’s next.</p></div>
+						<button class="button button-primary" id="add-order-button"><span data-icon="plus"></span> Add new order</button>
+					</div>
+					<div class="metric-grid" id="metric-grid"></div>
+					<div class="dashboard-grid">
+						<section class="panel recent-panel">
+							<div class="panel-heading"><div><p class="eyebrow">THE WORK IN MOTION</p><h2>Recent orders</h2></div><button class="text-button" data-go="orders">View all <span data-icon="arrow-right"></span></button></div>
+							<div class="table-wrap"><table><thead><tr><th>ORDER / CLIENT</th><th>GARMENT</th><th>STATUS</th><th>AMOUNT / BALANCE</th><th>COLLECTION</th></tr></thead><tbody id="recent-orders-body"></tbody></table></div>
+							<div class="empty-state compact-empty" id="recent-empty" hidden><span class="empty-icon" data-icon="scissors"></span><strong>No orders yet</strong><p>Your first fitting starts here.</p><button class="button button-outline" data-action="new-order">Add your first order</button></div>
+						</section>
+						<section class="panel collection-panel">
+							<div class="panel-heading"><div><p class="eyebrow">STAY A STEP AHEAD</p><h2>Upcoming collections</h2></div><span class="panel-icon" data-icon="calendar"></span></div>
+							<div class="collection-list" id="dashboard-collections"></div>
+							<div class="empty-state compact-empty" id="collections-empty" hidden><span class="empty-icon" data-icon="calendar-check"></span><strong>No upcoming collections</strong><p>We’ll remind you as dates approach.</p></div>
+						</section>
+					</div>
+				</section>
+
+				<section class="view-section" id="view-customers">
+					<div class="page-heading"><div><p class="eyebrow">PEOPLE, WELL LOOKED AFTER</p><h1>Your customers</h1><p class="page-subtitle">Every fitting and detail, thoughtfully kept in one place.</p></div><button class="button button-primary" data-action="new-order"><span data-icon="plus"></span> Add customer</button></div>
+					<div class="toolbar"><label class="search-box"><span data-icon="search"></span><input id="customer-search" type="search" placeholder="Search customers by name or phone..." autocomplete="off"></label><span class="result-count" id="customer-count"></span></div>
+					<div class="customer-grid" id="customer-grid"></div>
+				</section>
+
+				<section class="view-section" id="view-orders">
+					<div class="page-heading"><div><p class="eyebrow">CUT, SEWN, AND TRACKED</p><h1>All orders</h1><p class="page-subtitle">The complete picture, from first fitting to final collection.</p></div><button class="button button-primary" data-action="new-order"><span data-icon="plus"></span> Add new order</button></div>
+					<div class="toolbar orders-toolbar"><label class="search-box"><span data-icon="search"></span><input id="order-search" type="search" placeholder="Search name, phone, order ID, style..." autocomplete="off"></label><label class="select-wrap"><span class="sr-only">Filter orders</span><select id="order-filter"><option value="All">All orders</option><option>Received</option><option>In Progress</option><option>Ready</option><option>Collected</option><option>Cancelled</option><option value="Unpaid">Unpaid</option><option value="Partially Paid">Partially paid</option></select></label><label class="select-wrap"><span class="sr-only">Sort orders</span><select id="order-sort"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="collection">Collection date</option><option value="amount">Amount</option><option value="customer">Customer name</option></select></label><button class="button button-outline export-button" id="export-csv"><span data-icon="download"></span> Export CSV</button></div>
+					<div class="panel data-panel"><div class="table-wrap"><table><thead><tr><th>ORDER / CLIENT</th><th>GARMENT / STYLE</th><th>STATUS</th><th>PAYMENT</th><th>COLLECTION</th><th></th></tr></thead><tbody id="orders-body"></tbody></table></div><div class="empty-state" id="orders-empty" hidden><span class="empty-icon" data-icon="scissors"></span><strong>No matching orders</strong><p>Try another search or add a new order.</p><button class="button button-outline" data-action="new-order">Add new order</button></div></div>
+				</section>
+
+				<section class="view-section" id="view-measurements">
+					<div class="page-heading"><div><p class="eyebrow">A PERFECT FIT, EVERY TIME</p><h1>Measurements</h1><p class="page-subtitle">Customer measurements, ready to reuse for the next piece.</p></div></div>
+					<div class="toolbar"><label class="search-box"><span data-icon="search"></span><input id="measurement-search" type="search" placeholder="Find a customer..." autocomplete="off"></label><span class="result-count" id="measurement-count"></span></div>
+					<div class="measurement-grid" id="measurement-grid"></div>
+				</section>
+
+				<section class="view-section" id="view-gallery">
+					<div class="page-heading"><div><p class="eyebrow">THE CRAFT, ON DISPLAY</p><h1>Style gallery</h1><p class="page-subtitle">A living portfolio of the pieces made in your workroom.</p></div><button class="button button-primary" id="add-gallery-button"><span data-icon="plus"></span> Add a piece</button></div>
+					<div class="gallery-grid" id="gallery-grid"></div>
+					<div class="empty-state gallery-empty" id="gallery-empty" hidden><span class="empty-icon" data-icon="image"></span><strong>Your work deserves a gallery</strong><p>Add finished pieces as you go. Images stay in this browser.</p><button class="button button-outline" data-action="new-gallery">Add the first piece</button></div>
+				</section>
+
+				<section class="view-section" id="view-payments">
+					<div class="page-heading"><div><p class="eyebrow">EVERY NAIRA ACCOUNTED FOR</p><h1>Payments</h1><p class="page-subtitle">A simple ledger of money received and balances due.</p></div><button class="button button-outline" id="payments-export"><span data-icon="download"></span> Export CSV</button></div>
+					<div class="payment-summary" id="payment-summary"></div>
+					<div class="panel data-panel"><div class="table-wrap"><table><thead><tr><th>DATE</th><th>ORDER / CUSTOMER</th><th>PAYMENT METHOD</th><th>AMOUNT RECEIVED</th></tr></thead><tbody id="payments-body"></tbody></table></div><div class="empty-state" id="payments-empty" hidden><span class="empty-icon" data-icon="wallet"></span><strong>No payments recorded yet</strong><p>Payments appear here once you add an order or record a payment.</p></div></div>
+				</section>
+
+				<section class="view-section" id="view-settings">
+					<div class="page-heading"><div><p class="eyebrow">MAKE IT YOURS</p><h1>Settings</h1><p class="page-subtitle">Studio details, appearance, and your data.</p></div></div>
+					<div class="settings-layout">
+						<section class="panel settings-panel"><div class="settings-heading"><span class="settings-icon" data-icon="store"></span><div><h2>Studio details</h2><p>These details appear on your receipts.</p></div></div><form id="settings-form" class="settings-form"><label>Business name<input name="businessName" value="Prestige Tailoring House" maxlength="80" required></label><label>Short brand name<input name="brandName" value="J Crafts" maxlength="40" required></label><label>Phone number<input name="phone" type="tel" placeholder="Business phone"></label><label>Address<input name="address" placeholder="Studio address"></label><button class="button button-primary" type="submit">Save studio details</button></form></section>
+						<section class="panel settings-panel appearance-panel"><div class="settings-heading"><span class="settings-icon" data-icon="sun-moon"></span><div><h2>Appearance</h2><p>Choose a studio color and display mode.</p></div></div><div class="appearance-group"><div class="appearance-label"><strong>Theme color</strong><small>Change the color used across the workroom.</small></div><div class="theme-options" role="group" aria-label="Theme color"><button class="theme-option" type="button" data-theme-option="black" aria-pressed="false"><span class="theme-swatch swatch-black"></span><span>Black</span></button><button class="theme-option" type="button" data-theme-option="white" aria-pressed="false"><span class="theme-swatch swatch-white"></span><span>White</span></button><button class="theme-option" type="button" data-theme-option="red" aria-pressed="false"><span class="theme-swatch swatch-red"></span><span>Red</span></button><button class="theme-option" type="button" data-theme-option="green" aria-pressed="true"><span class="theme-swatch swatch-green"></span><span>Green</span></button><button class="theme-option" type="button" data-theme-option="blue" aria-pressed="false"><span class="theme-swatch swatch-blue"></span><span>Blue</span></button><button class="theme-option" type="button" data-theme-option="ash" aria-pressed="false"><span class="theme-swatch swatch-ash"></span><span>Ash / Gray</span></button></div></div><div class="appearance-group mode-group"><div class="appearance-label"><strong>Display mode</strong><small>Choose a comfortable light or dark interface.</small></div><div class="mode-options" role="group" aria-label="Display mode"><button class="mode-option" type="button" data-mode-option="light" aria-pressed="true"><span data-icon="sun"></span>Light mode</button><button class="mode-option" type="button" data-mode-option="dark" aria-pressed="false"><span data-icon="moon"></span>Dark mode</button></div></div></section>
+						<section class="panel settings-panel"><div class="settings-heading"><span class="settings-icon" data-icon="database"></span><div><h2>Your data</h2><p>Everything stays in this browser unless you export it.</p></div></div><div class="data-actions"><button class="button button-outline" id="backup-button"><span data-icon="download"></span> Download backup</button><label class="button button-outline upload-backup"><span data-icon="upload"></span> Restore backup<input id="restore-input" type="file" accept="application/json,.json" hidden></label><button class="button button-danger" id="clear-data-button"><span data-icon="trash"></span> Clear all data</button></div><p class="data-note">Order photos and gallery images are compressed and saved locally. Keep a backup before clearing browser data.</p></section>
+					</div>
+				</section>
+			</div>
+			<footer class="main-footer"><span>Made for the details that make it yours.</span><span>Prestige Tailoring House <i>·</i> J Crafts</span></footer>
+		</main>
+	</div>
+
+	<div class="overlay" id="order-overlay" hidden>
+		<section class="modal modal-large" role="dialog" aria-modal="true" aria-labelledby="order-modal-title">
+			<div class="modal-header"><div><p class="eyebrow">A NEW PIECE BEGINS</p><h2 id="order-modal-title">Add new order</h2><p class="modal-subtitle">Customer, garment, fitting, and payment details.</p></div><button class="icon-button modal-close" data-close="order-overlay" aria-label="Close"><span data-icon="x"></span></button></div>
+			<form id="order-form">
+				<input type="hidden" name="orderId"><input type="hidden" name="customerId">
+				<div class="form-section"><div class="form-section-title"><span>01</span><h3>Customer details</h3></div><div class="form-grid"><label class="field-wide">Customer name <b>*</b><input name="customerName" required maxlength="100" placeholder="e.g. Amara Okafor"></label><label>Phone number <b>*</b><input name="phone" required type="tel" maxlength="30" placeholder="e.g. 0801 234 5678"></label><label>Email <span class="optional">Optional</span><input name="email" type="email" maxlength="120" placeholder="name@example.com"></label><label class="field-wide">Address <span class="optional">Optional</span><input name="address" maxlength="180" placeholder="Customer address"></label></div></div>
+				<div class="form-section"><div class="form-section-title"><span>02</span><h3>The garment</h3></div><div class="form-grid"><label>Clothing type <b>*</b><select name="type" required><option value="">Choose a garment</option><option>Native wear</option><option>Shirt</option><option>Trouser</option><option>Senator</option><option>Kaftan</option><option>Suit</option><option>Dress</option><option>Skirt</option><option>Agbada</option><option>Other</option></select></label><label>Quantity<input name="quantity" type="number" min="1" max="99" value="1" required></label><label class="field-wide">Style / design description <b>*</b><input name="style" required maxlength="140" placeholder="e.g. Double-breasted senator with contrast piping"></label><label class="field-wide">Special instructions <span class="optional">Optional</span><textarea name="instructions" rows="2" maxlength="500" placeholder="Fabric notes, preferred fit, alterations..."></textarea></label><div class="field-wide photo-field"><span class="field-label">Clothing photo <span class="optional">Optional</span></span><label class="photo-upload"><span class="photo-upload-icon" data-icon="camera"></span><span><strong>Take / upload clothing photo</strong><small>JPG or PNG, up to 10 MB. Saved privately on this device.</small></span><input name="photo" type="file" accept="image/*" capture="environment"></label><div class="photo-preview" id="order-photo-preview" hidden></div></div></div></div>
+				<div class="form-section"><div class="form-section-title"><span>03</span><h3>Measurements <span class="optional">Optional</span></h3></div><div class="measurement-input-grid" id="measurement-inputs"></div><div class="custom-measurement-row"><input id="custom-measurement-name" placeholder="Custom measurement"><input id="custom-measurement-value" placeholder="Value (e.g. 42 in)"><button class="button button-outline button-small" type="button" id="add-custom-measurement"><span data-icon="plus"></span> Add</button></div><div class="custom-tags" id="custom-measurement-tags"></div></div>
+				<div class="form-section"><div class="form-section-title"><span>04</span><h3>Payment & collection</h3></div><div class="form-grid"><label>Total price (₦) <b>*</b><input name="total" type="number" min="0" step="0.01" required placeholder="0.00"></label><label>Amount paid (₦)<input name="paidNow" type="number" min="0" step="0.01" value="0" required></label><div class="balance-preview field-wide"><span>Remaining balance</span><strong id="balance-preview">₦0</strong><small id="payment-status-preview">Not paid</small></div><label>Date received <b>*</b><input name="receivedDate" type="date" required></label><label>Expected completion <input name="expectedDate" type="date"></label><label>Collection date & time <b>*</b><input name="collectionDate" type="datetime-local" required></label><label>Order status<select name="status"><option>Received</option><option>In Progress</option><option>Ready</option><option>Collected</option><option>Cancelled</option></select></label></div></div>
+				<p class="form-error" id="order-error" role="alert" hidden></p><div class="modal-actions"><button class="button button-quiet" type="button" data-close="order-overlay">Cancel</button><button class="button button-primary" type="submit"><span data-icon="check"></span> Save order</button></div>
+			</form>
+		</section>
+	</div>
+
+	<div class="overlay" id="detail-overlay" hidden><section class="modal modal-detail" role="dialog" aria-modal="true" aria-labelledby="detail-title"><div id="detail-content"></div></section></div>
+	<div class="overlay" id="measurement-overlay" hidden><section class="modal modal-medium" role="dialog" aria-modal="true" aria-labelledby="measurement-modal-title"><div class="modal-header"><div><p class="eyebrow">DETAILS FOR THE PERFECT FIT</p><h2 id="measurement-modal-title">Edit measurements</h2><p class="modal-subtitle" id="measurement-customer-name"></p></div><button class="icon-button modal-close" data-close="measurement-overlay" aria-label="Close"><span data-icon="x"></span></button></div><form id="measurement-form"><input type="hidden" name="customerId"><div class="measurement-input-grid" id="measurement-editor-inputs"></div><div class="custom-measurement-row"><input id="editor-custom-name" placeholder="Custom measurement"><input id="editor-custom-value" placeholder="Value (e.g. 42 in)"><button class="button button-outline button-small" type="button" id="editor-add-custom"><span data-icon="plus"></span> Add</button></div><div class="custom-tags" id="editor-custom-tags"></div><p class="form-error" id="measurement-error" role="alert" hidden></p><div class="modal-actions"><button class="button button-quiet" type="button" data-close="measurement-overlay">Cancel</button><button class="button button-primary" type="submit"><span data-icon="check"></span> Save measurements</button></div></form></section></div>
+	<div class="overlay" id="payment-overlay" hidden><section class="modal modal-medium" role="dialog" aria-modal="true" aria-labelledby="payment-modal-title"><div class="modal-header"><div><p class="eyebrow">PAYMENT RECEIVED</p><h2 id="payment-modal-title">Add a payment</h2><p class="modal-subtitle" id="payment-order-label"></p></div><button class="icon-button modal-close" data-close="payment-overlay" aria-label="Close"><span data-icon="x"></span></button></div><form id="payment-form" class="settings-form"><input type="hidden" name="orderId"><label>Amount received (₦) <b>*</b><input name="amount" type="number" min="0.01" step="0.01" required></label><label>Payment method<select name="method"><option>Cash</option><option>Bank transfer</option><option>POS</option><option>Other</option></select></label><p class="form-error" id="payment-error" role="alert" hidden></p><div class="modal-actions"><button class="button button-quiet" type="button" data-close="payment-overlay">Cancel</button><button class="button button-primary" type="submit"><span data-icon="check"></span> Record payment</button></div></form></section></div>
+	<div class="overlay" id="gallery-overlay" hidden><section class="modal modal-medium" role="dialog" aria-modal="true" aria-labelledby="gallery-modal-title"><div class="modal-header"><div><p class="eyebrow">A PIECE TO REMEMBER</p><h2 id="gallery-modal-title">Add to the gallery</h2></div><button class="icon-button modal-close" data-close="gallery-overlay" aria-label="Close"><span data-icon="x"></span></button></div><form id="gallery-form" class="settings-form"><label>Style name <b>*</b><input name="title" required maxlength="100" placeholder="e.g. The Aso-Oke Edit"></label><label>Clothing type<select name="type"><option>Native wear</option><option>Shirt</option><option>Trouser</option><option>Senator</option><option>Kaftan</option><option>Suit</option><option>Dress</option><option>Skirt</option><option>Agbada</option><option>Other</option></select></label><label>Description <span class="optional">Optional</span><textarea name="description" rows="3" maxlength="300" placeholder="A few words about the craftsmanship..."></textarea></label><label class="photo-upload"><span class="photo-upload-icon" data-icon="image"></span><span><strong>Choose a finished piece photo</strong><small>JPG or PNG, up to 10 MB. Saved on this device.</small></span><input name="photo" type="file" accept="image/*" required></label><div class="photo-preview" id="gallery-photo-preview" hidden></div><p class="form-error" id="gallery-error" role="alert" hidden></p><div class="modal-actions"><button class="button button-quiet" type="button" data-close="gallery-overlay">Cancel</button><button class="button button-primary" type="submit"><span data-icon="check"></span> Add piece</button></div></form></section></div>
+	<div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+	<script src="script.js" defer></script>
+</body>
+</html>
