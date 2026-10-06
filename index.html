@@ -4,19 +4,23 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="theme-color" content="#f4f4ef">
-	<meta name="description" content="A thoughtful workspace for managing Prestige Tailoring House customers, orders, payments, and collections.">
-	<title>J Crafts | Prestige Tailoring House</title>
+	<meta name="description" content="TailorDesk is a premium tailoring management system. Your Tailoring Business, Organized.">
+	<title>TailorDesk | Tailoring Management System</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700;800&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
 	<div class="app-shell">
 		<aside class="sidebar" id="sidebar">
-			<a class="brand" href="#dashboard" aria-label="J Crafts dashboard">
-				<span class="brand-mark">J<span>.</span></span>
-				<span class="brand-copy"><strong>J Crafts</strong><small>PRESTIGE TAILORING HOUSE</small></span>
+			<a class="brand" href="#dashboard" aria-label="TailorDesk dashboard">
+				<span class="brand-mark" aria-hidden="true">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Needle and thread logo">
+						<path d="M12 3 8.5 7.5a5 5 0 0 0 7 7L20 10M12 3l3 3m-3-3-2 4m1.2 3.8L6 16a3 3 0 0 0 4.2 4.2l5.2-5.2M15 6l3-3m-3 3 3 3"/>
+					</svg>
+				</span>
+				<span class="brand-copy"><strong>TailorDesk</strong><small>Your Tailoring Business, Organized.</small></span>
 			</a>
 			<div class="workspace-label">WORKSPACE</div>
 			<nav class="primary-nav" aria-label="Main navigation">
@@ -30,25 +34,26 @@
 			<div class="sidebar-bottom">
 				<div class="studio-note"><span class="studio-dot"></span><span><strong>Your studio</strong><small>Made with intention.</small></span></div>
 				<button class="nav-link" data-view="settings"><span class="nav-icon" data-icon="settings"></span>Settings</button>
-				<div class="sidebar-foot">A finer fit, every time.<span>© <span id="current-year"></span> J Crafts</span></div>
+				<div class="sidebar-foot">Your Tailoring Business, Organized.<span>© <span id="current-year"></span> TailorDesk</span></div>
 			</div>
 		</aside>
 
 		<main class="main-area">
 			<header class="topbar">
 				<button class="icon-button mobile-menu" id="mobile-menu" aria-label="Open navigation"><span data-icon="menu"></span></button>
-				<div class="breadcrumb"><span>J Crafts</span><span class="crumb-slash">/</span><strong id="breadcrumb-current">Dashboard</strong></div>
+				<span class="topbar-brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 8.5 7.5a5 5 0 0 0 7 7L20 10M12 3l3 3m-3-3-2 4m1.2 3.8L6 16a3 3 0 0 0 4.2 4.2l5.2-5.2M15 6l3-3m-3 3 3 3"/></svg></span>
+				<div class="breadcrumb"><span>TailorDesk</span><span class="crumb-slash">/</span><strong id="breadcrumb-current">Dashboard</strong></div>
 				<div class="topbar-actions">
 					<button class="icon-button notification-button" id="notification-button" aria-label="View collection reminders"><span data-icon="bell"></span><i id="notification-dot" hidden></i></button>
 					<span class="topbar-divider"></span>
-					<div class="user-chip"><span class="avatar">JC</span><span><strong>Studio manager</strong><small>Administrator</small></span></div>
+					<div class="user-chip"><span class="avatar">TD</span><span><strong>Studio manager</strong><small>Administrator</small></span></div>
 				</div>
 			</header>
 
 			<div class="page-content">
 				<section class="view-section active" id="view-dashboard">
 					<div class="page-heading dashboard-heading">
-						<div><p class="eyebrow" id="today-label">YOUR WORKROOM</p><h1 class="greeting-heading"><span id="greeting-text" aria-live="off"></span><span class="typewriter-caret" aria-hidden="true"></span></h1><p class="page-subtitle">A clear view of your orders, clients, and what’s next.</p></div>
+						<div><div class="dashboard-brand"><span class="dashboard-brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 8.5 7.5a5 5 0 0 0 7 7L20 10M12 3l3 3m-3-3-2 4m1.2 3.8L6 16a3 3 0 0 0 4.2 4.2l5.2-5.2M15 6l3-3m-3 3 3 3"/></svg></span><span>TailorDesk</span></div><p class="eyebrow" id="today-label">YOUR WORKROOM</p><h1 class="greeting-heading"><span id="greeting-text" aria-live="off"></span><span class="typewriter-caret" aria-hidden="true"></span></h1><p class="page-subtitle">Your Tailoring Business, Organized.</p></div>
 						<button class="button button-primary" id="add-order-button"><span data-icon="plus"></span> Add new order</button>
 					</div>
 					<div class="metric-grid" id="metric-grid"></div>
@@ -99,13 +104,13 @@
 				<section class="view-section" id="view-settings">
 					<div class="page-heading"><div><p class="eyebrow">MAKE IT YOURS</p><h1>Settings</h1><p class="page-subtitle">Studio details, appearance, and your data.</p></div></div>
 					<div class="settings-layout">
-						<section class="panel settings-panel"><div class="settings-heading"><span class="settings-icon" data-icon="store"></span><div><h2>Studio details</h2><p>These details appear on your receipts.</p></div></div><form id="settings-form" class="settings-form"><label>Business name<input name="businessName" value="Prestige Tailoring House" maxlength="80" required></label><label>Short brand name<input name="brandName" value="J Crafts" maxlength="40" required></label><label>Phone number<input name="phone" type="tel" placeholder="Business phone"></label><label>Address<input name="address" placeholder="Studio address"></label><button class="button button-primary" type="submit">Save studio details</button></form></section>
+						<section class="panel settings-panel"><div class="settings-heading"><span class="settings-icon" data-icon="store"></span><div><h2>Studio details</h2><p>These details appear on your receipts.</p></div></div><form id="settings-form" class="settings-form"><label>Business name<input name="businessName" value="TailorDesk" maxlength="80" required></label><label>Receipt signature<input name="brandName" value="TailorDesk" maxlength="40" required></label><label>Phone number<input name="phone" type="tel" placeholder="Business phone"></label><label>Address<input name="address" placeholder="Studio address"></label><button class="button button-primary" type="submit">Save studio details</button></form></section>
 						<section class="panel settings-panel appearance-panel"><div class="settings-heading"><span class="settings-icon" data-icon="sun-moon"></span><div><h2>Appearance</h2><p>Choose a studio color and display mode.</p></div></div><div class="appearance-group"><div class="appearance-label"><strong>Theme color</strong><small>Change the color used across the workroom.</small></div><div class="theme-options" role="group" aria-label="Theme color"><button class="theme-option" type="button" data-theme-option="black" aria-pressed="false"><span class="theme-swatch swatch-black"></span><span>Black</span></button><button class="theme-option" type="button" data-theme-option="white" aria-pressed="false"><span class="theme-swatch swatch-white"></span><span>White</span></button><button class="theme-option" type="button" data-theme-option="red" aria-pressed="false"><span class="theme-swatch swatch-red"></span><span>Red</span></button><button class="theme-option" type="button" data-theme-option="green" aria-pressed="true"><span class="theme-swatch swatch-green"></span><span>Green</span></button><button class="theme-option" type="button" data-theme-option="blue" aria-pressed="false"><span class="theme-swatch swatch-blue"></span><span>Blue</span></button><button class="theme-option" type="button" data-theme-option="ash" aria-pressed="false"><span class="theme-swatch swatch-ash"></span><span>Ash / Gray</span></button></div></div><div class="appearance-group mode-group"><div class="appearance-label"><strong>Display mode</strong><small>Choose a comfortable light or dark interface.</small></div><div class="mode-options" role="group" aria-label="Display mode"><button class="mode-option" type="button" data-mode-option="light" aria-pressed="true"><span data-icon="sun"></span>Light mode</button><button class="mode-option" type="button" data-mode-option="dark" aria-pressed="false"><span data-icon="moon"></span>Dark mode</button></div></div></section>
 						<section class="panel settings-panel"><div class="settings-heading"><span class="settings-icon" data-icon="database"></span><div><h2>Your data</h2><p>Everything stays in this browser unless you export it.</p></div></div><div class="data-actions"><button class="button button-outline" id="backup-button"><span data-icon="download"></span> Download backup</button><label class="button button-outline upload-backup"><span data-icon="upload"></span> Restore backup<input id="restore-input" type="file" accept="application/json,.json" hidden></label><button class="button button-danger" id="clear-data-button"><span data-icon="trash"></span> Clear all data</button></div><p class="data-note">Order photos and gallery images are compressed and saved locally. Keep a backup before clearing browser data.</p></section>
 					</div>
 				</section>
 			</div>
-			<footer class="main-footer"><span>Made for the details that make it yours.</span><span>Prestige Tailoring House <i>·</i> J Crafts</span></footer>
+			<footer class="main-footer"><span>Your Tailoring Business, Organized.</span><span>Tailoring Management System <i>·</i> TailorDesk</span></footer>
 		</main>
 	</div>
 

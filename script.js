@@ -1,10 +1,13 @@
-/* J Crafts keeps its records in this browser. Export a backup regularly. */
+/* TailorDesk keeps its records in this browser. Export a backup regularly. */
 (() => {
   'use strict';
 
+  // Keep the established keys so existing customer, order, and appearance data remains available.
   const STORAGE_KEY = 'jcrafts-data-v1';
   const THEME_KEY = 'jcrafts-theme';
   const APPEARANCE_KEY = 'jcrafts-appearance-v1';
+  const BRAND_NAME = 'TailorDesk';
+  const BRAND_TAGLINE = 'Your Tailoring Business, Organized.';
   const THEME_OPTIONS = ['black', 'white', 'red', 'green', 'blue', 'ash'];
   const userName = 'Joel';
   const GREETING_TYPE_DELAY = 105;
@@ -30,7 +33,7 @@
     banknote: '<rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 9h.01M18 15h.01"/>',
   };
 
-  const freshData = () => ({ version: 1, orders: [], customers: [], payments: [], gallery: [], nextOrderNumber: 1, settings: { businessName: 'Prestige Tailoring House', brandName: 'J Crafts', phone: '', address: '' } });
+  const freshData = () => ({ version: 1, orders: [], customers: [], payments: [], gallery: [], nextOrderNumber: 1, settings: { businessName: BRAND_NAME, brandName: BRAND_NAME, phone: '', address: '' } });
   let data = loadData();
   let appearance = loadAppearancePreferences();
   let greetingRunId = 0;
@@ -45,13 +48,19 @@
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
       if (!saved || typeof saved !== 'object') return freshData();
       const restored = { ...freshData(), ...saved, orders: Array.isArray(saved.orders) ? saved.orders : [], customers: Array.isArray(saved.customers) ? saved.customers : [], payments: Array.isArray(saved.payments) ? saved.payments : [], gallery: Array.isArray(saved.gallery) ? saved.gallery : [], settings: { ...freshData().settings, ...(saved.settings || {}) } };
+      if (String(restored.settings.businessName).trim().toLowerCase() === 'prestige tailoring house') {
+        restored.settings.businessName = BRAND_NAME;
+      }
+      if (['j crafts', "the tailor's notebook", "tailor's notebook"].includes(String(restored.settings.brandName || '').trim().toLowerCase())) {
+        restored.settings.brandName = BRAND_NAME;
+      }
       restored.orders = restored.orders.map(order => {
         const customer = restored.customers.find(item => item.id === order.customerId);
         return { ...order, customerName: order.customerName || order.name || customer?.name || '', phone: order.phone || customer?.phone || '', email: order.email || customer?.email || '', address: order.address || customer?.address || '' };
       });
       return restored;
     } catch (error) {
-      console.warn('J Crafts data could not be read:', error);
+      console.warn('TailorDesk data could not be read:', error);
       return freshData();
     }
   }
@@ -65,7 +74,7 @@
         mode: ['light', 'dark'].includes(saved.mode) ? saved.mode : legacyMode,
       };
     } catch (error) {
-      console.warn('J Crafts appearance preferences could not be read:', error);
+      console.warn('TailorDesk appearance preferences could not be read:', error);
       return { theme: 'green', mode: 'light' };
     }
   }
@@ -77,7 +86,7 @@
       if (message) toast(message);
       return true;
     } catch (error) {
-      console.error('J Crafts data could not be saved:', error);
+      console.error('TailorDesk data could not be saved:', error);
       toast('Could not save. The browser may be out of storage; remove a large photo or download a backup.', true);
       return false;
     }
@@ -85,6 +94,10 @@
 
   function icon(name) {
     return `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name] || ICONS.check}</svg>`;
+  }
+
+  function brandLogo() {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 8.5 7.5a5 5 0 0 0 7 7L20 10M12 3l3 3m-3-3-2 4m1.2 3.8L6 16a3 3 0 0 0 4.2 4.2l5.2-5.2M15 6l3-3m-3 3 3 3"/></svg>';
   }
 
   function paintIcons(root = document) {
@@ -249,7 +262,7 @@
   }
 
   async function runGreetingAnimation(runId) {
-    const welcome = 'Welcome to J Crafts';
+    const welcome = `Welcome to ${BRAND_NAME}`;
     while (greetingIsActive(runId)) {
       const greeting = currentTimeGreeting();
       if (!await typeGreeting(greeting, runId)) return;
@@ -382,7 +395,7 @@
   function renderGallery() {
     const target = document.getElementById('gallery-grid');
     const items = [...data.gallery].sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
-    target.innerHTML = items.map(item => `<article class="gallery-card"><img class="gallery-image" src="${safeImage(item.photo)}" alt="${escapeHtml(item.title)}" loading="lazy"><div class="gallery-card-copy"><p class="eyebrow">${escapeHtml(item.type || 'MADE TO MEASURE')}</p><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.description || 'Crafted with care in the J Crafts workroom.')}</p><div class="gallery-card-bottom"><span>${escapeHtml(formatDate(item.createdAt))}</span><button data-delete-gallery="${escapeHtml(item.id)}" aria-label="Remove ${escapeHtml(item.title)}">${icon('trash')}</button></div></div></article>`).join('');
+    target.innerHTML = items.map(item => `<article class="gallery-card"><img class="gallery-image" src="${safeImage(item.photo)}" alt="${escapeHtml(item.title)}" loading="lazy"><div class="gallery-card-copy"><p class="eyebrow">${escapeHtml(item.type || 'MADE TO MEASURE')}</p><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.description || 'Crafted with care in the tailoring studio.')}</p><div class="gallery-card-bottom"><span>${escapeHtml(formatDate(item.createdAt))}</span><button data-delete-gallery="${escapeHtml(item.id)}" aria-label="Remove ${escapeHtml(item.title)}">${icon('trash')}</button></div></div></article>`).join('');
     document.getElementById('gallery-empty').hidden = items.length > 0;
     target.hidden = items.length === 0;
   }
@@ -646,6 +659,16 @@
     const payments = orderPayments(order.id).sort((a, b) => String(a.date).localeCompare(String(b.date)));
     const target = document.getElementById('detail-content');
     target.innerHTML = `${safeImage(order.photo) ? `<img class="detail-photo" src="${safeImage(order.photo)}" alt="${escapeHtml(order.type)} clothing for ${escapeHtml(order.customerName)}">` : ''}<div class="detail-inner"><div class="receipt-brand"><strong>${escapeHtml(data.settings.businessName)}</strong><span>${escapeHtml(data.settings.brandName)}</span><small>${escapeHtml(data.settings.phone)}${data.settings.address ? ` · ${escapeHtml(data.settings.address)}` : ''}</small></div><div class="detail-title-row"><div><p class="eyebrow">${escapeHtml(order.type.toUpperCase())} · ${escapeHtml(order.quantity)} PIECE${Number(order.quantity) === 1 ? '' : 'S'}</p><h2 id="detail-title">${escapeHtml(order.customerName)}</h2><p>${escapeHtml(order.phone)}${order.email ? ` · ${escapeHtml(order.email)}` : ''}</p></div><span class="detail-id">${escapeHtml(order.orderNumber)}</span></div><div class="detail-badges">${statusBadge(order.status)}${paymentBadge(paymentStatus(order))}</div><div class="detail-section-title">The garment</div><div class="detail-grid"><div class="detail-field"><small>Clothing type</small><strong>${escapeHtml(order.type)}</strong></div><div class="detail-field"><small>Quantity</small><strong>${escapeHtml(order.quantity)}</strong></div><div class="detail-field field-wide"><small>Style / design</small><strong>${escapeHtml(order.style)}</strong></div><div class="detail-field field-wide"><small>Special instructions</small><strong>${order.instructions ? escapeHtml(order.instructions) : 'None recorded'}</strong></div></div><div class="detail-section-title">Dates & payment</div><div class="detail-grid"><div class="detail-field"><small>Date received</small><strong>${escapeHtml(formatDate(order.receivedDate))}</strong></div><div class="detail-field"><small>Expected completion</small><strong>${escapeHtml(formatDate(order.expectedDate))}</strong></div><div class="detail-field"><small>Collection date</small><strong>${escapeHtml(formatDate(order.collectionDate, { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: '2-digit' }))}</strong></div><div class="detail-field"><small>Total price</small><strong>${money(order.total)}</strong></div><div class="detail-field"><small>Amount paid</small><strong>${money(paid)}</strong></div><div class="detail-field"><small>Remaining balance</small><strong>${money(balance(order))}</strong></div><div class="detail-field"><small>Payment status</small><strong>${escapeHtml(paymentStatus(order))}</strong></div><div class="detail-field"><small>Customer address</small><strong>${escapeHtml(order.address || customer?.address || 'Not provided')}</strong></div></div>${measurements.length ? `<div class="detail-section-title">Measurements</div><div class="detail-grid">${measurements.map(([name, value]) => `<div class="detail-field"><small>${escapeHtml(name)}</small><strong>${escapeHtml(value)}</strong></div>`).join('')}</div>` : ''}${payments.length ? `<div class="detail-section-title">Payment history</div><div class="detail-grid">${payments.map(payment => `<div class="detail-field"><small>${escapeHtml(formatDate(payment.date))} · ${escapeHtml(payment.method || 'Cash')}</small><strong>${money(payment.amount)}</strong></div>`).join('')}</div>` : ''}<div class="detail-actions"><button class="button button-outline" data-edit-order="${escapeHtml(order.id)}">${icon('edit')} Edit</button><button class="button button-outline" data-add-payment="${escapeHtml(order.id)}">${icon('banknote')} Add payment</button>${order.status !== 'Ready' && order.status !== 'Collected' && order.status !== 'Cancelled' ? `<button class="button button-outline" data-mark-ready="${escapeHtml(order.id)}">${icon('check')} Mark ready</button>` : ''}${order.status !== 'Collected' && order.status !== 'Cancelled' ? `<button class="button button-outline" data-mark-collected="${escapeHtml(order.id)}">${icon('check')} Mark collected</button>` : ''}<button class="button button-outline" data-print-receipt="${escapeHtml(order.id)}">${icon('printer')} Print receipt</button><button class="button button-danger" data-delete-order="${escapeHtml(order.id)}">${icon('trash')} Delete</button>${customer ? `<button class="button button-quiet" data-open-customer="${escapeHtml(customer.id)}">Customer record</button>` : ''}</div></div>`;
+    const receiptBrand = target.querySelector('.receipt-brand');
+    const savedSignature = String(data.settings.brandName || '').trim();
+    const businessName = String(data.settings.businessName || '').trim();
+    const studioDetails = [
+      savedSignature && savedSignature !== BRAND_NAME ? savedSignature : '',
+      businessName !== BRAND_NAME ? businessName : '',
+      data.settings.phone,
+      data.settings.address,
+    ].filter(Boolean).map(escapeHtml).join(' · ');
+    receiptBrand.innerHTML = `<span class="receipt-logo">${brandLogo()}</span><strong>${BRAND_NAME}</strong><span>${BRAND_TAGLINE}</span>${studioDetails ? `<small>${studioDetails}</small>` : ''}`;
     openOverlay('detail-overlay');
   }
 
@@ -742,7 +765,7 @@
     if (!file) return;
     try {
       const restored = JSON.parse(await file.text());
-      if (!restored || !Array.isArray(restored.orders) || !Array.isArray(restored.customers) || !Array.isArray(restored.payments) || !Array.isArray(restored.gallery)) throw new Error('This file is not a J Crafts backup.');
+      if (!restored || !Array.isArray(restored.orders) || !Array.isArray(restored.customers) || !Array.isArray(restored.payments) || !Array.isArray(restored.gallery)) throw new Error('This file is not a TailorDesk backup.');
       const approved = window.confirm('Restore this backup? Current records will be replaced.');
       if (!approved) return;
       data = { ...freshData(), ...restored, settings: { ...freshData().settings, ...(restored.settings || {}) } };
@@ -871,7 +894,7 @@
     document.getElementById('backup-button').addEventListener('click', backupData);
     document.getElementById('restore-input').addEventListener('change', event => { restoreData(event.target.files[0]); event.target.value = ''; });
     document.getElementById('clear-data-button').addEventListener('click', () => {
-      if (!window.confirm('Clear all J Crafts customers, orders, payments, measurements, photos, and settings? This cannot be undone. Download a backup first if needed.')) return;
+      if (!window.confirm('Clear all TailorDesk customers, orders, payments, measurements, photos, and settings? This cannot be undone. Download a backup first if needed.')) return;
       data = freshData();
       localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem(THEME_KEY);
